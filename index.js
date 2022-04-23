@@ -1,14 +1,17 @@
 import express from 'express'
 const app = express()
-const port = 5000
 import socketServer from './socket.js'
 import { getCurrentUser, getRoomUsers, userJoin } from './utils/users.js'
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-app.get('/', (req, res) => {
-    res.send("Hello")
-})
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-const server = app.listen(port, () => console.log('listening at', port))
+const PORT = process.env.PORT || 6000
+
+app.use(express.static(__dirname +  '/../Client/build'))
+const server = app.listen(PORT, () => console.log('listening at',PORT))
 
 const io = socketServer(server)
 
